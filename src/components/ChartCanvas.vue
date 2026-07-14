@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
 
 type ChartDataset = {
   label: string
@@ -16,12 +16,33 @@ const props = defineProps<{
   height?: number
 }>()
 
-const width = 560
+const chartShell = ref<HTMLElement | null>(null)
+const width = ref(560)
 const height = computed(() => props.height ?? 220)
 const padL = 42
-const padR = 14
+const padR = 24
 const padT = 14
 const padB = 32
+
+function updateChartWidth() {
+  if (!chartShell.value) return
+  const rect = chartShell.value.getBoundingClientRect()
+  width.value = Math.max(320, Math.floor(rect.width))
+}
+
+let resizeObserver: ResizeObserver | undefined
+
+onMounted(() => {
+  updateChartWidth()
+  if (typeof ResizeObserver !== 'undefined' && chartShell.value) {
+    resizeObserver = new ResizeObserver(() => updateChartWidth())
+    resizeObserver.observe(chartShell.value)
+  }
+})
+
+onBeforeUnmount(() => {
+  resizeObserver?.disconnect()
+})
 
 function scale(value: number, fromMin: number, fromMax: number, toMin: number, toMax: number) {
   if (fromMax === fromMin) return (toMin + toMax) / 2
@@ -40,7 +61,7 @@ const chartPoints = computed(() =>
   props.datasets.map((dataset) => ({
     ...dataset,
     points: dataset.data.map((value, index) => [
-      scale(index, 0, dataset.data.length - 1, padL, width - padR),
+      scale(index, 0, dataset.data.length - 1, padL, width.value - padR),
       scale(value, minValue.value, maxValue.value, height.value - padB, padT),
     ] as [number, number]),
   })),
@@ -58,12 +79,12 @@ const areaPath = computed(() => {
   return `${pathFromPoints(points)} L${points[points.length - 1][0]},${height.value - padB} L${points[0][0]},${height.value - padB} Z`
 })
 
-const barWidth = computed(() => (width - padL - padR) / Math.max(props.labels.length, 1) - 14)
+const barWidth = computed(() => (width.value - padL - padR) / Math.max(props.labels.length, 1) - 14)
 </script>
 
 <template>
-  <div class="chart-shell" :style="{ height: `${height}px` }">
-    <svg :width="width" :height="height" viewBox="0 0 560 260" class="chart-svg">
+  <div ref="chartShell" class="chart-shell" :style="{ height: `${height}px` }">
+    <svg :width="width" :height="height" viewBox="0 0 560 260" class="chart-svg" preserveAspectRatio="xMidYMid meet">
       <line v-for="tick in yTicks" :key="tick" :x1="padL" :x2="width - padR" :y1="scale(tick, minValue, maxValue, height - padB, padT)" :y2="scale(tick, minValue, maxValue, height - padB, padT)" stroke="rgba(107,118,136,0.16)" stroke-width="1" />
       <line :x1="padL" :x2="padL" :y1="padT" :y2="height - padB" stroke="rgba(107,118,136,0.16)" stroke-width="1" />
       <line :x1="padL" :x2="width - padR" :y1="height - padB" :y2="height - padB" stroke="rgba(107,118,136,0.16)" stroke-width="1" />

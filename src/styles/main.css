@@ -186,8 +186,9 @@ a { color: inherit; text-decoration: none; }
 .heatmap-row { display: grid; grid-template-columns: 90px repeat(8, minmax(44px, 1fr)); gap: 6px; align-items: center; }
 .heatmap-header, .heatmap-label { font-size: 0.72rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase; }
 .heatmap-cell { min-height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.72rem; font-weight: 700; }
-.chart-shell { position: relative; }
+.chart-shell { position: relative; width: 100%; padding: 0 24px 8px; box-sizing: border-box; }
 .chart-shell canvas { width: 100% !important; height: 100% !important; }
+.chart-svg { display: block; width: 100%; height: auto; max-width: 100%; }
 .row-dept { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 .trend-chip { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; }
 .trend-chip.up { background: rgba(220,43,43,0.12); color: var(--red-500); }
