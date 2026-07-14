@@ -14,6 +14,11 @@ const staffingStats = [
 
 const shiftTabs = ['Day', 'Evening', 'Night']
 const coverageTrend = [94, 95, 93, 96, 97, 95, 96]
+const coverageSeries = [
+  { label: 'Day', data: [96, 95, 97, 98, 96, 94, 95] },
+  { label: 'Evening', data: [92, 94, 93, 95, 96, 95, 94] },
+  { label: 'Night', data: [88, 90, 89, 91, 93, 92, 91] },
+]
 
 const shiftRows = computed(() => ({
   Day: [
@@ -49,7 +54,7 @@ const shiftRows = computed(() => ({
         <div class="section-heading">
           <h2>Coverage Trend</h2>
         </div>
-        <ChartCanvas type="bar" :labels="['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']" :datasets="[{ label: 'Coverage %', data: coverageTrend, borderColor: '#2563eb', backgroundColor: '#2563eb' }]" :height="220" />
+        <ChartCanvas type="line" :labels="['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']" :datasets="[{ label: 'Day', data: coverageSeries[0].data, borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.16)' }, { label: 'Evening', data: coverageSeries[1].data, borderColor: '#e8930b', backgroundColor: 'rgba(232,147,11,0.16)' }, { label: 'Night', data: coverageSeries[2].data, borderColor: '#0d9c94', backgroundColor: 'rgba(13,156,148,0.16)' }]" :height="220" />
       </div>
       <div class="card card-pad">
         <div class="section-heading">

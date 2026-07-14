@@ -4,6 +4,7 @@ import ChartCanvas from '../components/ChartCanvas.vue'
 
 const store = useDashboardStore()
 const occupancyTrend = [84, 85, 87, 89, 91, 93, 90, 88, 86, 89, 90, 92]
+const reportMonths = ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
 </script>
 
 <template>
@@ -12,7 +13,7 @@ const occupancyTrend = [84, 85, 87, 89, 91, 93, 90, 88, 86, 89, 90, 92]
       <div class="section-heading">
         <h2>Occupancy Trend — 12 Months</h2>
       </div>
-      <ChartCanvas type="line" :labels="['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']" :datasets="[{ label: 'Occupancy %', data: occupancyTrend, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.16)' }]" :height="260" />
+      <ChartCanvas type="area" :labels="reportMonths" :datasets="[{ label: 'Occupancy %', data: occupancyTrend, borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.16)' }]" :height="260" />
     </div>
 
     <div class="card card-pad" style="margin-bottom: 20px;">
