@@ -12,19 +12,6 @@ const alertCount = computed(() => store.departments.filter((department) => depar
 
 <template>
   <section class="view-shell">
-    <div class="alert-banner critical">
-      <div class="alert-icon">
-        <v-icon color="white">mdi-alert</v-icon>
-      </div>
-      <div class="alert-body">
-        <div class="title">{{ alertCount }} Critical Alerts Require Attention</div>
-        <div class="desc">ICU capacity, Emergency wait times, and staffing coverage need immediate review.</div>
-      </div>
-      <div class="alert-actions">
-        <button class="alert-toggle-btn">View Details</button>
-      </div>
-    </div>
-
     <div class="kpi-grid">
       <KpiCard v-for="metric in store.executiveKpis" :key="metric.id" :metric="metric" />
     </div>

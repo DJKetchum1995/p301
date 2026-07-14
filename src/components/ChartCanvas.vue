@@ -19,15 +19,14 @@ const props = defineProps<{
 const chartShell = ref<HTMLElement | null>(null)
 const width = ref(560)
 const height = computed(() => props.height ?? 220)
-const padL = 42
+const padL = 24
 const padR = 24
 const padT = 14
 const padB = 32
 
 function updateChartWidth() {
   if (!chartShell.value) return
-  const rect = chartShell.value.getBoundingClientRect()
-  width.value = Math.max(320, Math.floor(rect.width))
+  width.value = Math.max(320, Math.floor(chartShell.value.clientWidth))
 }
 
 let resizeObserver: ResizeObserver | undefined
@@ -84,7 +83,7 @@ const barWidth = computed(() => (width.value - padL - padR) / Math.max(props.lab
 
 <template>
   <div ref="chartShell" class="chart-shell" :style="{ height: `${height}px` }">
-    <svg :width="width" :height="height" viewBox="0 0 560 260" class="chart-svg" preserveAspectRatio="xMidYMid meet">
+    <svg width="100%" :height="height" :viewBox="`0 0 ${width} ${height}`" class="chart-svg" preserveAspectRatio="xMidYMid meet">
       <line v-for="tick in yTicks" :key="tick" :x1="padL" :x2="width - padR" :y1="scale(tick, minValue, maxValue, height - padB, padT)" :y2="scale(tick, minValue, maxValue, height - padB, padT)" stroke="rgba(107,118,136,0.16)" stroke-width="1" />
       <line :x1="padL" :x2="padL" :y1="padT" :y2="height - padB" stroke="rgba(107,118,136,0.16)" stroke-width="1" />
       <line :x1="padL" :x2="width - padR" :y1="height - padB" :y2="height - padB" stroke="rgba(107,118,136,0.16)" stroke-width="1" />
